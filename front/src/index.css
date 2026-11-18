@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ════════════════════════════════════════════════════════════════════
+   PALETTES DE COULEURS
+   Toutes les couleurs du site viennent d'ici (valeurs R G B).
+   Palette active : celle indiquée par data-theme sur <html> dans index.html
+   (actuellement « electric »). Sans data-theme, c'est « fire » qui s'applique.
+   Aperçu sans rien modifier : ajoute ?theme=volt (etc.) à l'adresse du site.
+   --on-accent = couleur du texte posé sur la couleur de la marque.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* 🔥 fire — noir + orange */
+:root {
+  --ink-950: 8 8 10;
+  --ink-900: 16 16 18;
+  --ink-800: 23 23 26;
+  --ink-700: 33 33 37;
+  --ink-600: 45 45 50;
+
+  --accent-50: 255 247 237;
+  --accent-100: 255 237 213;
+  --accent-200: 254 215 170;
+  --accent-300: 253 186 116;
+  --accent-400: 251 146 60;
+  --accent-500: 249 115 22;
+  --accent-600: 194 65 12;
+  --accent-700: 154 52 18;
+  --accent-800: 124 45 18;
+  --on-accent: 16 16 18;
+
+  --paper-50: 250 250 249;
+  --paper-100: 245 245 244;
+  --paper-200: 239 238 236;
+  --paper-300: 228 226 223;
+  --paper-400: 208 205 200;
+  --paper-500: 168 162 158;
+}
+
+/* ⚡ volt — noir + vert fluo */
+:root[data-theme='volt'] {
+  --ink-950: 7 8 7;
+  --ink-900: 14 16 14;
+  --ink-800: 21 24 21;
+  --ink-700: 31 35 31;
+  --ink-600: 43 48 43;
+
+  --accent-50: 248 255 229;
+  --accent-100: 238 255 194;
+  --accent-200: 225 255 138;
+  --accent-300: 212 255 74;
+  --accent-400: 194 242 31;
+  --accent-500: 166 217 11;
+  --accent-600: 77 124 15;
+  --accent-700: 63 98 18;
+  --accent-800: 54 83 20;
+  --on-accent: 14 16 14;
+
+  --paper-50: 250 250 249;
+  --paper-100: 244 245 242;
+  --paper-200: 237 239 233;
+  --paper-300: 224 228 219;
+  --paper-400: 201 207 194;
+  --paper-500: 157 165 149;
+}
+
+/* 💙 electric — bleu nuit + bleu électrique */
+:root[data-theme='electric'] {
+  --ink-950: 4 6 13;
+  --ink-900: 8 12 24;
+  --ink-800: 15 21 40;
+  --ink-700: 24 32 58;
+  --ink-600: 37 47 80;
+
+  --accent-50: 238 243 255;
+  --accent-100: 220 230 255;
+  --accent-200: 185 204 255;
+  --accent-300: 141 169 255;
+  --accent-400: 82 125 255;
+  --accent-500: 36 87 255;
+  --accent-600: 27 69 219;
+  --accent-700: 22 55 176;
+  --accent-800: 18 44 134;
+  --on-accent: 255 255 255;
+
+  --paper-50: 247 248 250;
+  --paper-100: 240 242 245;
+  --paper-200: 232 235 240;
+  --paper-300: 217 222 230;
+  --paper-400: 186 194 207;
+  --paper-500: 136 146 163;
+}
+
+/* 🏆 gold — noir + or (palette d'origine, reprise du Google Form) */
+:root[data-theme='gold'] {
+  --ink-950: 11 10 9;
+  --ink-900: 20 19 17;
+  --ink-800: 28 26 23;
+  --ink-700: 38 35 31;
+  --ink-600: 52 48 42;
+
+  --accent-50: 250 246 238;
+  --accent-100: 243 235 219;
+  --accent-200: 232 215 184;
+  --accent-300: 217 192 143;
+  --accent-400: 194 163 111;
+  --accent-500: 160 136 95;
+  --accent-600: 143 115 55;
+  --accent-700: 115 92 44;
+  --accent-800: 90 72 35;
+  --on-accent: 20 19 17;
+
+  --paper-50: 251 249 246;
+  --paper-100: 246 243 238;
+  --paper-200: 241 237 231;
+  --paper-300: 230 223 212;
+  --paper-400: 211 201 185;
+  --paper-500: 181 170 151;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-ink-900 font-sans text-paper-50 antialiased;
+  }
+  /* Laisse la place à la barre de navigation fixe lors des sauts d'ancre */
+  section[id] {
+    scroll-margin-top: 4rem;
+  }
+  ::selection {
+    background: rgb(var(--accent-500));
+    color: rgb(var(--on-accent));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ── Boutons : pilules, texte en Lalezar ───────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 font-display text-lg leading-none transition duration-200
+      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400
+      disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-accent-500 text-on-accent shadow-glow hover:-translate-y-0.5 hover:bg-accent-400 active:translate-y-0;
+  }
+  .btn-light {
+    @apply btn bg-white text-ink-900 shadow-card hover:-translate-y-0.5 hover:bg-accent-50;
+  }
+  .btn-ghost {
+    @apply btn border-2 border-white/20 text-paper-50 hover:border-white/50 hover:bg-white/5;
+  }
+  .btn-dark {
+    @apply btn bg-ink-900 text-paper-50 hover:bg-ink-700;
+  }
+
+  /* Petite étiquette au-dessus des titres */
+  .tag {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent-500/15 px-4 py-1.5 font-display text-[15px] text-accent-300;
+  }
+  .tag-light {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-4 py-1.5 font-display text-[15px] text-accent-700;
+  }
+
+  /* Carte sombre arrondie */
+  .card-dark {
+    @apply rounded-3xl border border-white/[0.06] bg-ink-800;
+  }
+
+  /* ── Formulaire façon Google Forms ──────────────────────── */
+  .gf-card {
+    @apply relative overflow-hidden rounded-2xl border border-paper-300 bg-white px-5 py-6 text-ink-900 shadow-sm sm:px-7;
+  }
+  /* Barre de couleur côté début quand la question est active (comme Google Forms) */
+  .gf-card::before {
+    content: '';
+    @apply pointer-events-none absolute inset-y-0 start-0 w-1.5 bg-accent-500 opacity-0 transition-opacity;
+  }
+  .gf-card:focus-within::before {
+    @apply opacity-100;
+  }
+  .gf-card--error {
+    @apply border-red-600;
+  }
+  .gf-card--error::before {
+    @apply bg-red-600;
+  }
+
+  .gf-input {
+    @apply w-full border-0 border-b border-paper-400 bg-transparent px-0 py-2 text-base text-ink-900 outline-none placeholder:text-ink-900/40;
+    background-image: linear-gradient(rgb(var(--accent-500)), rgb(var(--accent-500)));
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: 0 2px;
+    transition: background-size 0.3s ease;
+  }
+  .gf-input:focus {
+    background-size: 100% 2px;
+  }
+  .gf-input[aria-invalid='true'] {
+    @apply border-red-600;
+  }
+
+  .gf-radio {
+    @apply m-0 grid h-5 w-5 shrink-0 cursor-pointer appearance-none place-content-center rounded-full border-2 border-[#5f6368] bg-white transition;
+  }
+  .gf-radio::before {
+    content: '';
+    @apply h-2.5 w-2.5 scale-0 rounded-full bg-accent-500 transition-transform duration-150;
+  }
+  .gf-radio:checked {
+    @apply border-accent-500;
+  }
+  .gf-radio:checked::before {
+    @apply scale-100;
+  }
+  .gf-radio:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-accent-500;
+  }
+  .gf-option:hover .gf-radio {
+    box-shadow: 0 0 0 9px rgb(var(--accent-500) / 0.1);
+  }
+}
+
+@layer utilities {
+  /* Inclinaison « sport » : vers l'avant dans le sens de lecture (gauche en arabe, droite en français) */
+  .slant {
+    transform: skewX(-7deg);
+  }
+  [dir='rtl'] .slant {
+    transform: skewX(7deg);
+  }
+  /* Lignes de vitesse en fond */
+  .speed-lines {
+    background-image: repeating-linear-gradient(
+      115deg,
+      rgb(255 255 255 / 0.06) 0 2px,
+      transparent 2px 26px
+    );
+  }
+  [dir='rtl'] .speed-lines {
+    background-image: repeating-linear-gradient(
+      65deg,
+      rgb(255 255 255 / 0.06) 0 2px,
+      transparent 2px 26px
+    );
+  }
+  /* Chiffres en contour */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 2px rgb(var(--accent-400));
+  }
+  .text-outline-faint {
+    color: transparent;
+    -webkit-text-stroke: 2px rgb(255 255 255 / 0.07);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

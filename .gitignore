@@ -1,0 +1,7 @@
+# Fichiers créés par Windows / macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Réglages personnels de Claude Code
+.claude/settings.local.json
