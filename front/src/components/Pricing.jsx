@@ -1,8 +1,9 @@
 import { Check } from 'lucide-react'
-import { currency, plans } from '../config'
+import { currency, discount, plans } from '../config'
 import { content } from '../content'
 import { useLang } from '../lib/i18n'
 import { formatNumber } from '../lib/format'
+import { oldPrice } from '../lib/pricing'
 import SectionHeading from './SectionHeading'
 
 function Perk({ children, onBlue = false }) {
@@ -23,8 +24,8 @@ function Perk({ children, onBlue = false }) {
 export default function Pricing({ onChoose }) {
   const { t } = useLang()
   const p = content.pricing
-  // Prix mensuel de référence (formule 1 mois) pour calculer l'économie
-  const monthly = plans.find((plan) => plan.months === 1)?.price ?? plans[0].price / plans[0].months
+  // Texte autour du prix par mois : « soit {price} par mois »
+  const [perMonthBefore, perMonthAfter = ''] = t(p.perMonth).split('{price}')
 
   return (
     <section id="pricing" className="bg-ink-950 py-20 sm:py-28">
@@ -43,7 +44,8 @@ export default function Pricing({ onChoose }) {
 
         <div className="mt-8 grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
           {plans.map((plan) => {
-            const saving = Math.round(monthly * plan.months - plan.price)
+            const before = oldPrice(plan.price)
+            const perMonth = plan.months > 1 ? Math.round(plan.price / plan.months) : 0
             const featured = plan.featured
             return (
               <article
@@ -68,25 +70,47 @@ export default function Pricing({ onChoose }) {
                     </p>
                     <h3 className="slant mt-1 font-display text-[2rem] leading-tight lg:text-[2.1rem]">{t(plan.name)}</h3>
                   </div>
-                  <div dir="ltr" className="flex shrink-0 items-baseline gap-1.5 lg:mt-5 rtl:justify-end">
-                    <span className="tabular font-num text-5xl font-extrabold italic leading-none lg:text-[4.2rem]">
-                      {formatNumber(plan.price)}
-                    </span>
-                    <span className="font-num text-xl font-bold italic opacity-70 lg:text-2xl">{currency}</span>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5 lg:mt-5 lg:items-start">
+                    {before && (
+                      <div dir="ltr" className="flex items-center gap-2">
+                        <span className="sr-only">{t(p.oldPrice)}</span>
+                        <s
+                          className={`tabular font-num text-lg font-bold italic leading-none lg:text-xl ${
+                            featured ? 'text-white/60' : 'text-paper-400'
+                          }`}
+                        >
+                          {formatNumber(before)} {currency}
+                        </s>
+                        <span
+                          className={`slant rounded-full px-2.5 py-1 font-num text-sm font-extrabold italic leading-none ${
+                            featured ? 'bg-white text-accent-700' : 'bg-accent-500 text-on-accent'
+                          }`}
+                        >
+                          −{discount}%
+                        </span>
+                      </div>
+                    )}
+                    <div dir="ltr" className="flex items-baseline gap-1.5">
+                      <span className="tabular font-num text-5xl font-extrabold italic leading-none lg:text-[4.2rem]">
+                        {formatNumber(plan.price)}
+                      </span>
+                      <span className="font-num text-xl font-bold italic opacity-70 lg:text-2xl">{currency}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="mt-4 min-h-8">
-                  {saving > 0 ? (
+                  {perMonth > 0 ? (
                     <span
                       className={`inline-block rounded-full px-3 py-1.5 text-sm font-semibold ${
                         featured ? 'bg-white/15 text-white' : 'bg-accent-500/15 text-accent-300'
                       }`}
                     >
-                      {t(p.save)}{' '}
+                      {perMonthBefore}
                       <bdi dir="ltr">
-                        {formatNumber(saving)} {currency}
+                        {formatNumber(perMonth)} {currency}
                       </bdi>
+                      {perMonthAfter}
                     </span>
                   ) : (
                     plan.note && <span className="text-sm text-paper-400">{t(plan.note)}</span>

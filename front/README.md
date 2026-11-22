@@ -18,6 +18,7 @@ npm run build    # version de production dans dist/
 | Je veux changer…                                    | Fichier                         |
 | --------------------------------------------------- | ------------------------------- |
 | Prix et formules                                    | `src/config.js` → `plans`       |
+| Réduction affichée (−30 %, prix barrés)             | `src/config.js` → `discount`    |
 | WhatsApp, Instagram, TikTok, Facebook               | `src/config.js` → `contact`     |
 | Coordonnées CCP / BaridiMob (affichées après envoi) | `src/config.js` → `payment`     |
 | Nom, photo, présentation du coach                   | `src/config.js` → `coach`       |

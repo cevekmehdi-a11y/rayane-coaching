@@ -58,43 +58,47 @@ export const payment = {
 }
 
 // ── Formules & prix ─────────────────────────────────────────────────
-// L'économie affichée (« وفّر … DA ») est calculée à partir du prix 1 mois.
+// `price` = prix que le client paie.
+// `discount` = réduction affichée, en % : chaque formule montre aussi un ancien prix barré
+// (prix ÷ 0,7 pour 30 %, arrondi à 50 DA) et un badge « −30% ». Mets 0 pour l'enlever.
+// Sous le prix des formules de plusieurs mois, le site affiche le prix par mois (« soit 1 800 DA par mois »).
 // `formValue` = texte de l'option dans le Google Form (utile seulement si googleForm.enabled = true).
 export const currency = 'DA'
+export const discount = 30
 
 export const plans = [
   {
     id: '1m',
     months: 1,
-    price: 2900,
+    price: 1900,
     name: { ar: 'شهر', fr: '1 mois' },
     label: { ar: 'شهر تمرين وتغذية', fr: '1 mois — entraînement + nutrition' },
     note: { ar: 'مثالية للبداية', fr: 'Idéal pour commencer' },
-    formValue: 'شهر تمرين و تغذية - 2900 DA',
+    formValue: 'شهر تمرين و تغذية - 1900 DA',
   },
   {
     id: '2m',
     months: 2,
-    price: 5200,
+    price: 3600,
     name: { ar: 'شهرين', fr: '2 mois' },
     label: { ar: 'شهرين تمرين وتغذية', fr: '2 mois — entraînement + nutrition' },
-    formValue: 'شهرين تمرين و تغذية - 5200 DA',
+    formValue: 'شهرين تمرين و تغذية - 3600 DA',
   },
   {
     id: '3m',
     months: 3,
-    price: 7900,
+    price: 5100,
     name: { ar: '3 أشهر', fr: '3 mois' },
     label: { ar: '3 أشهر تمرين وتغذية', fr: '3 mois — entraînement + nutrition' },
-    formValue: '3 اشهر تمرين و تغذية - 7900 DA',
+    formValue: '3 اشهر تمرين و تغذية - 5100 DA',
   },
   {
-    id: '4m',
-    months: 4,
-    price: 9500,
-    name: { ar: '4 أشهر', fr: '4 mois' },
-    label: { ar: '4 أشهر تمرين وتغذية', fr: '4 mois — entraînement + nutrition' },
-    formValue: '4 اشهر تمرين و تغذية - 9500 DA',
+    id: '5m',
+    months: 5,
+    price: 7500,
+    name: { ar: '5 أشهر', fr: '5 mois' },
+    label: { ar: '5 أشهر تمرين وتغذية', fr: '5 mois — entraînement + nutrition' },
+    formValue: '5 اشهر تمرين و تغذية - 7500 DA',
     featured: true, // carte mise en avant
     badge: { ar: 'أفضل قيمة', fr: 'Le plus avantageux' },
   },

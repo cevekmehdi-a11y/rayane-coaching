@@ -5,6 +5,7 @@ import { content } from '../content'
 import { useLang } from '../lib/i18n'
 import { formatNumber, normalizeDigits } from '../lib/format'
 import { submitGoogleForm } from '../lib/googleForm'
+import { oldPrice } from '../lib/pricing'
 import { publicUrl } from '../lib/publicUrl'
 import { canPrefill, copyText, hasWhatsApp, whatsappHref } from '../lib/whatsapp'
 import { WhatsAppIcon } from './icons'
@@ -23,7 +24,7 @@ const DRAFT_KEY = 'rc-signup-draft'
 const DRY_RUN = import.meta.env.DEV && new URLSearchParams(window.location.search).has('dryrun')
 const MODE = hasWhatsApp ? (canPrefill ? 'prefill' : 'copy') : googleForm.enabled ? 'google' : 'none'
 
-const planOptions = plans.map((p) => ({ value: p.formValue, label: p.label, price: p.price }))
+const planOptions = plans.map((p) => ({ value: p.formValue, label: p.label, price: p.price, oldPrice: oldPrice(p.price) }))
 const optionsFor = (q) => (q.type === 'plans' ? planOptions : (q.options ?? []))
 const detailKey = (q) => `${q.id}__detail`
 const isBlank = (v) => v == null || String(v).trim() === ''
@@ -280,9 +281,17 @@ function Question({ q, answers, setAnswer, touch, error, flash }) {
                 />
                 <span className="flex-1 text-[15px] leading-snug text-ink/90">{t(opt.label)}</span>
                 {opt.price != null && (
-                  <bdi dir="ltr" className="whitespace-nowrap text-[15px] font-bold text-accent-700">
-                    {formatNumber(opt.price)} {currency}
-                  </bdi>
+                  <span className="flex shrink-0 flex-col items-end whitespace-nowrap leading-tight">
+                    <bdi dir="ltr" className="text-[15px] font-bold text-accent-700">
+                      {formatNumber(opt.price)} {currency}
+                    </bdi>
+                    {opt.oldPrice && (
+                      <s className="text-[12px] text-ink/50">
+                        <span className="sr-only">{t(content.pricing.oldPrice)} </span>
+                        <bdi dir="ltr">{formatNumber(opt.oldPrice)}</bdi>
+                      </s>
+                    )}
+                  </span>
                 )}
               </label>
             )

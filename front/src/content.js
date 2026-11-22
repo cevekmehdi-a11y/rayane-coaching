@@ -164,7 +164,10 @@ export const content = {
     },
     planSubtitle: { ar: 'تمرين + تغذية', fr: 'Entraînement + nutrition' },
     perksTitle: { ar: 'كل باقة فيها:', fr: 'Chaque formule comprend :' },
-    save: { ar: 'توفّر', fr: 'Tu économises' },
+    // Sous le prix des formules de plusieurs mois ({price} = prix par mois)
+    perMonth: { ar: 'يعني {price} للشهر', fr: 'soit {price} par mois' },
+    // Lu par les lecteurs d'écran juste avant l'ancien prix barré
+    oldPrice: { ar: 'السعر قبل التخفيض:', fr: 'Prix avant réduction :' },
     choose: { ar: 'نختار هذي', fr: 'Je prends celle-ci' },
     perks: [
       { ar: 'برنامج تمارين مخصّص لك', fr: 'Programme d’entraînement personnalisé' },
