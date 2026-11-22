@@ -71,37 +71,10 @@ s'affiche dans la console du navigateur).
 
 ## Mise en ligne
 
-### Sur GitHub Pages (gratuit)
+Le site est hébergé gratuitement sur **Cloudflare Pages**, relié au dépôt GitHub
+`cevekmehdi-a11y/rayane-coaching` : **https://rayane-coaching.pages.dev**
 
-Le fichier `.github/workflows/deploy.yml` (dans le dossier `rayen`, au-dessus de `front`) reconstruit
-le site et le met en ligne **tout seul à chaque `git push`** sur la branche `main`.
-
-**La première fois :**
-
-1. Sur [github.com/new](https://github.com/new) : nom `rayane-coaching`, visibilité **Public**
-   (obligatoire pour GitHub Pages avec un compte gratuit), sans README → **Create repository**.
-2. Dans un terminal ouvert dans le dossier `rayen` (pas `front`) :
-
-   ```bash
-   git config --global user.name "Ton nom"
-   git config --global user.email "ton-adresse@exemple.com"
-   git init -b main
-   git add .
-   git commit -m "Premier envoi du site"
-   git remote add origin https://github.com/TON-PSEUDO/rayane-coaching.git
-   git push -u origin main
-   ```
-
-   Les deux `git config` ne servent qu'une fois par ordinateur. L'adresse e-mail apparaît dans
-   l'historique public du dépôt : pour la cacher, utilise celle en `@users.noreply.github.com`
-   indiquée dans GitHub → Settings → Emails. Au premier `git push`, une fenêtre s'ouvre pour te
-   connecter à GitHub.
-3. Dans le dépôt sur GitHub : **Settings → Pages → Build and deployment → Source : GitHub Actions**.
-4. Onglet **Actions** → « Déployer sur GitHub Pages » → **Run workflow**. Le premier essai, lancé
-   par le `git push`, est en rouge parce que Pages n'était pas encore activé : c'est normal.
-   1 à 2 minutes plus tard, le site est en ligne sur `https://TON-PSEUDO.github.io/rayane-coaching/`.
-
-**Ensuite**, pour publier une modification :
+**Publier une modification** : dans un terminal ouvert dans le dossier `rayen` (pas `front`) :
 
 ```bash
 git add .
@@ -109,30 +82,35 @@ git commit -m "Nouveaux prix"
 git push
 ```
 
-Le site se met à jour tout seul en 1 à 2 minutes (suivi dans l'onglet **Actions**).
+Cloudflare reconstruit le site et le met en ligne tout seul en 1 à 2 minutes (suivi dans Cloudflare →
+**Workers & Pages** → `rayane-coaching` → **Deployments**). Un `git push` sur une autre branche que
+`main` donne un lien d'aperçu à part, sans toucher au site en ligne.
 
-- **Nom de domaine** (ex. `rayanecoaching.com`) : Settings → Pages → Custom domain. Le build
-  s'adapte tout seul (adresses des fichiers, image d'aperçu).
-- Le site est servi dans le sous-dossier `/rayane-coaching/` : c'est géré automatiquement
-  (`BASE_PATH` dans `vite.config.js`). Pour les photos, écris simplement `'/images/coach.jpg'`
-  dans `src/config.js`.
+**Réglages du projet** (onglet **Settings**), à reprendre tels quels pour recréer le projet :
 
-### Sur Vercel ou Netlify (autre possibilité)
+| Réglage                | Valeur                              |
+| ---------------------- | ----------------------------------- |
+| Production branch      | `main`                              |
+| Framework preset       | None                                |
+| Build command          | `npm run build`                     |
+| Build output directory | `dist`                              |
+| Root directory         | `front`                             |
+| Variable `SITE_URL`    | `https://rayane-coaching.pages.dev` |
 
-Importe le même dépôt GitHub sur vercel.com ou netlify.com : dossier racine `front`, commande
-`npm run build`, dossier de sortie `dist`. Chaque `git push` met aussi le site à jour, avec une
-adresse plus courte (ex. `rayane-coaching.vercel.app`), et le dépôt peut rester privé.
+- **Nom de domaine** (ex. `rayanecoaching.com`) : onglet **Custom domains** → **Set up a custom
+  domain**. Remplace ensuite la valeur de `SITE_URL` par la nouvelle adresse, puis relance le dernier
+  déploiement (**Deployments** → ⋯ → **Retry deployment**) pour que l'aperçu des liens l'utilise.
+- **Pourquoi Cloudflare** : son offre gratuite accepte les sites commerciaux, contrairement à celles
+  de GitHub Pages et de Vercel. Le dépôt GitHub peut aussi être privé.
 
 ### Bon à savoir
 
-Le site doit être en **https** (c'est le cas sur GitHub Pages, Vercel et Netlify) pour que la copie
-automatique du message fonctionne.
+Le site doit être en **https** (c'est le cas sur Cloudflare Pages) pour que la copie automatique du
+message fonctionne.
 
 - **Aperçu du lien** (WhatsApp, Instagram, Facebook) : image `public/og-image.png` (1200×630).
-  Ces applis exigent une adresse complète : sur GitHub Pages et Vercel elle est trouvée
-  automatiquement, ailleurs définis la variable d'environnement `SITE_URL`
-  (ex. `https://rayanecoaching.com`) avant le build. Avec un domaine personnalisé sur Vercel,
-  définis aussi `SITE_URL` pour qu'il soit utilisé.
+  Ces applis exigent une adresse complète : elle vient de la variable `SITE_URL` du projet
+  Cloudflare (voir plus haut). Sans elle, l'image d'aperçu ne s'affiche pas.
 - **Icônes** : `favicon.svg`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` +
   `site.webmanifest` (ajout à l'écran d'accueil).
 - **Polices** (hébergées avec le site, aucun appel à Google Fonts) : **Lalezar** pour les titres et
@@ -142,6 +120,6 @@ automatique du message fonctionne.
   lignes de vitesse (`speed-lines`), banderoles croisées, cartes et boutons arrondis.
 - **Photo du coach** : dès que `coach.photo` est rempli dans `src/config.js`, elle remplace la fiche
   « programme » dessinée à côté du titre de l'accueil.
-- `vercel.json` met les fichiers de `assets/` en cache longue durée (ils changent de nom à chaque build).
+- `public/_headers` met les fichiers de `assets/` en cache longue durée (ils changent de nom à chaque build).
 - Si tu ajoutes un pixel publicitaire ou des statistiques, mets à jour la page Confidentialité
   (`src/content.js` → `privacy`).

@@ -1,16 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Sous-dossier où le site est publié. Sur GitHub Pages, le déploiement le fournit (ex. /rayane-coaching/).
-// Ailleurs (Vercel, Netlify, nom de domaine) le site est à la racine : '/'.
+// Sous-dossier où le site est publié. Sur Cloudflare Pages ou avec un nom de domaine, le site est à la racine : '/'.
+// Pour le publier dans un sous-dossier (ex. /rayane-coaching/), définis BASE_PATH avant le build.
 const base = (process.env.BASE_PATH || '/').replace(/^\/*/, '/').replace(/\/*$/, '/')
 
 // Adresse publique du site, utilisée pour l'image d'aperçu des liens (og:image doit être une URL complète).
-// Sur Vercel et GitHub Pages elle est trouvée automatiquement ; sinon définis SITE_URL (ex. https://rayanecoaching.com).
-const siteUrl = (
-  process.env.SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
-).replace(/\/+$/, '')
+// Elle est définie dans les réglages du projet Cloudflare : variable SITE_URL (ex. https://rayane-coaching.pages.dev).
+const siteUrl = (process.env.SITE_URL || '').replace(/\/+$/, '')
 
 /** Remplace __SITE_URL__ dans index.html et ajoute l'URL canonique quand l'adresse est connue */
 function siteUrlPlugin() {
